@@ -1,0 +1,41 @@
+﻿@using DevSpot.Constants;
+@model IEnumerable<JobPosting>
+
+<div class="list-group">
+    @foreach (var jobPosting in Model)
+    {
+        <div class="list-group-item" id="job-posting-@jobPosting.Id">
+            <h3>@jobPosting.Title</h3>
+            <p>@jobPosting.Description</p>
+            <p> <strong>Company:</strong>@jobPosting.Company</p>
+            <p> <strong>Location:</strong>@jobPosting.Location</p>
+            <p> <strong>Posted Date:</strong>@jobPosting.PostedDate.ToShortDateString()</p>
+
+            @if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Employer))
+            {
+                <div>
+                    <button onclick="deleteJobPosting(@jobPosting.Id)" class="btn btn-sm btn-danger">Delete</button>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function deleteJobPosting(id){
+            if(confirm("Really want to delete job posting with ID: " + id + "?")){
+                $.ajax({
+                    url: "@Url.Action("Delete", "JobPostings")/" + id,
+                    type: 'DELETE',
+                    success: function(result){
+                        $("#job-posting-" + id).remove();
+                    },
+                    error: function (err){
+                        alert("An error occurred");
+                    }
+                });
+            }
+        }
+    </script>
+}

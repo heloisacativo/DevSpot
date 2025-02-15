@@ -1,0 +1,10 @@
+.env
+bin/
+obj/
+.vs/
+.vsidx
+packages/
+project.lock.json
+project.assets.json
+*.deps.json
+*.runtimeconfig.json
